@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MediaService} from '../services/media.service';
+import {DigitransitService} from '../services/digitransit.service';
 
 @Component({
   selector: 'app-list-media',
@@ -9,9 +10,11 @@ import {MediaService} from '../services/media.service';
 export class ListMediaComponent implements OnInit {
   printThis: string;
   mediaArray: any;
+  stopArray: any;
+  stopName: string;
 
 
-  constructor(public mediaService: MediaService) {
+  constructor(public mediaService: MediaService, public digitransitService: DigitransitService) {
   }
 
   ngOnInit() {
@@ -27,10 +30,12 @@ export class ListMediaComponent implements OnInit {
           const thumbName = (temp[0] + '-tn320.png');
           this.mediaArray[index].thumbnail = thumbName;
         }); */
-
-
       }
     );
+    console.log(this.digitransitService.getRoutes(this.stopName).subscribe(response => {
+      console.log(response['data'].stops);
+      this.stopArray = response['data'].stops;
+    }));
   }
 
   // Option 2 if you need this function elsewhere
@@ -40,4 +45,10 @@ export class ListMediaComponent implements OnInit {
     return thumbnailUrl;
   }
 
+  getBusRoutes() {
+    this.digitransitService.getRoutes(this.stopName).subscribe(result => {
+      this.stopArray = result['data'].stops[0].patterns;
+    });
+
+  }
 }

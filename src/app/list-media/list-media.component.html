@@ -1,4 +1,4 @@
-<ul class ="card-deck">
+<ul class="card-deck">
   <li *ngFor="let media of mediaArray" class="card">
     <!-- Option 2 if you need this function elsewhere <img [src]="mediaService.mediaUrl + media.thumbnail"> -->
     <img [src]="mediaService.mediaUrl + thumbnailer(media.filename)">
@@ -6,4 +6,16 @@
     <p>Description</p>
   </li>
 </ul>
-
+<div>
+  <input class="searchBox" [(ngModel)]="stopName" placeholder="Bus stop name"/>
+  <button class="searchBtn" (click)="getBusRoutes()">
+    <p>Search</p>
+  </button>
+    <ul *ngIf="stopArray">
+      <li class="card" *ngFor="let pattern of stopArray">
+        <div class="card-body">
+          <h4 class="card-title">{{ pattern.name.split(" ")[0] }}</h4>
+          <h5 class="card-text">{{ pattern.route.longName }}</h5>
+        </div>
+      </li>
+    </ul>
